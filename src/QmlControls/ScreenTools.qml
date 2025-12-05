@@ -92,6 +92,7 @@ Item {
     property bool isMobile:                         ScreenToolsController.isMobile
     property bool isFakeMobile:                     ScreenToolsController.fakeMobile
     property bool isWindows:                        ScreenToolsController.isWindows
+    property bool streamOnlyMode:                   ScreenToolsController.streamOnlyMode
     property bool isDebug:                          ScreenToolsController.isDebug
     property bool isMac:                            ScreenToolsController.isMacOS
     property bool isLinux:                          ScreenToolsController.isLinux

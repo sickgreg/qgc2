@@ -33,6 +33,7 @@ class ScreenToolsController : public QObject
     Q_PROPERTY(bool     isMacOS             READ isMacOS            CONSTANT)
     Q_PROPERTY(bool     isLinux             READ isLinux            CONSTANT)
     Q_PROPERTY(bool     isWindows           READ isWindows          CONSTANT)
+    Q_PROPERTY(bool     streamOnlyMode      READ streamOnlyMode     CONSTANT)
     Q_PROPERTY(bool     isSerialAvailable   READ isSerialAvailable  CONSTANT)
     Q_PROPERTY(bool     hasTouch            READ hasTouch           CONSTANT)
     Q_PROPERTY(QString  iOSDevice           READ iOSDevice          CONSTANT)
@@ -57,6 +58,8 @@ public:
     static bool isMobile() { return fakeMobile(); }
     static bool fakeMobile();
 #endif
+
+    static bool streamOnlyMode();
 
 #if defined (Q_OS_ANDROID)
     static bool isAndroid() { return true;  }

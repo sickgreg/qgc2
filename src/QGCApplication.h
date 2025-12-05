@@ -76,6 +76,9 @@ public:
     /// @return true: Fake ui into showing mobile interface
     bool fakeMobile() const { return _fakeMobile; }
 
+    /// @return true: Stream-only Windows mode active
+    bool streamOnlyMode() const { return _streamOnlyMode; }
+
     void setLanguage();
     QQuickWindow *mainRootWindow();
     uint64_t msecsSinceBoot() const { return _msecsElapsedTime.elapsed(); }
@@ -145,6 +148,7 @@ private:
     bool _runningUnitTests = false;
     bool _simpleBootTest = false;
     bool _fakeMobile = false;    ///< true: Fake ui into displaying mobile interface
+    bool _streamOnlyMode = false; ///< true: Stream-only Windows mode
     bool _logOutput = false;    ///< true: Log Qt debug output to file
     quint8 _systemId = 0; ///< MAVLink system ID, 0 means not set
 

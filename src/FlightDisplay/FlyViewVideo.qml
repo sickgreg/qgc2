@@ -20,6 +20,8 @@ Item {
     property Item pipView
     property Item pipState: videoPipState
 
+    property bool streamOnlyMode: false
+
     property int    _track_rec_x:       0
     property int    _track_rec_y:       0
 
@@ -71,7 +73,7 @@ Item {
     QGCLabel {
         text: qsTr("Double-click to exit full screen")
         font.pointSize: ScreenTools.largeFontPointSize
-        visible: QGroundControl.videoManager.fullScreen && flyViewVideoMouseArea.containsMouse
+        visible: QGroundControl.videoManager.fullScreen && flyViewVideoMouseArea.containsMouse && !streamOnlyMode
         anchors.centerIn: parent
 
         onVisibleChanged: {
@@ -95,13 +97,14 @@ Item {
         screenX:                 flyViewVideoMouseArea.mouseX
         screenY:                 flyViewVideoMouseArea.mouseY
         cameraTrackingEnabled:   videoStreaming._camera && videoStreaming._camera.trackingEnabled
+        visible:                 !streamOnlyMode
     }
 
     MouseArea {
         id:                         flyViewVideoMouseArea
         anchors.fill:               parent
-        enabled:                    pipState.state === pipState.fullState
-        hoverEnabled:               true
+        enabled:                    pipState.state === pipState.fullState && !streamOnlyMode
+        hoverEnabled:               !streamOnlyMode
 
         property double x0:         0
         property double x1:         0

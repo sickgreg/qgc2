@@ -325,7 +325,9 @@ void VideoManager::setfullScreen(bool on)
 {
     if (on) {
         if (!_activeVehicle || _activeVehicle->vehicleLinkManager()->communicationLost()) {
-            on = false;
+            if (!qgcApp()->streamOnlyMode()) {
+                on = false;
+            }
         }
     }
 

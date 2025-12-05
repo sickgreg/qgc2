@@ -60,6 +60,7 @@ QGCApplication::QGCApplication(int &argc, char *argv[], const QGCCommandLinePars
     , _runningUnitTests(cli.runningUnitTests)
     , _simpleBootTest(cli.simpleBootTest)
     , _fakeMobile(cli.fakeMobile)
+    , _streamOnlyMode(cli.streamOnlyMode)
     , _logOutput(cli.logOutput)
     , _systemId(cli.systemId.value_or(0))
 {
@@ -218,6 +219,12 @@ void QGCApplication::init()
         qCDebug(QGCApplicationLog) << "Setting MAVLink System ID to:" << _systemId;
         SettingsManager::instance()->mavlinkSettings()->gcsMavlinkSystemID()->setRawValue(_systemId);
     }
+
+#ifdef Q_OS_WIN
+    if (_streamOnlyMode) {
+        SettingsManager::instance()->videoSettings()->lowLatencyMode()->setRawValue(true);
+    }
+#endif
 
     // Although this should really be in _initForNormalAppBoot putting it here allowws us to create unit tests which pop up more easily
     if (QFontDatabase::addApplicationFont(":/fonts/opensans") < 0) {

@@ -52,6 +52,7 @@ struct CommandLineParseResult
     bool useDesktopGL = false;
     bool useSwRast = false;
     bool quietWindowsAsserts = false;
+    bool streamOnlyMode = false;
 };
 
 /// Parse the application's command-line arguments into result.

@@ -27,6 +27,7 @@ static const QString kOptUnittestStress  = QStringLiteral("unittest-stress");
 static const QString kOptDesktop         = QStringLiteral("desktop");
 static const QString kOptSwrast          = QStringLiteral("swrast");
 static const QString kOptNoWinAssertUI   = QStringLiteral("no-windows-assert-ui");
+static const QString kOptStreamOnly      = QStringLiteral("stream-only");
 
 static QStringList normalizeArgs(const QStringList &args)
 {
@@ -143,6 +144,11 @@ CommandLineParseResult parseCommandLine()
         kOptNoWinAssertUI,
         QCoreApplication::translate("main", "Disable Windows assert dialog boxes."));
     (void) parser.addOption(quietWinAssertOpt);
+
+    const QCommandLineOption streamOnlyOpt(
+        kOptStreamOnly,
+        QCoreApplication::translate("main", "Stream-only UI mode (Windows)."));
+    (void) parser.addOption(streamOnlyOpt);
 #endif
 
     const QStringList normalizedArgs = normalizeArgs(QCoreApplication::arguments());
@@ -157,9 +163,9 @@ CommandLineParseResult parseCommandLine()
     }
 #endif
 #ifndef Q_OS_WIN
-    if (out.unknownOptions.contains(kOptDesktop) || out.unknownOptions.contains(kOptSwrast) || out.unknownOptions.contains(kOptNoWinAssertUI)) {
+    if (out.unknownOptions.contains(kOptDesktop) || out.unknownOptions.contains(kOptSwrast) || out.unknownOptions.contains(kOptNoWinAssertUI) || out.unknownOptions.contains(kOptStreamOnly)) {
         out.statusCode = CommandLineParseResult::Status::Error;
-        out.errorString = QCoreApplication::translate("main", "--%1/--%2/--%3 are only supported on Windows.").arg(kOptDesktop, kOptSwrast, kOptNoWinAssertUI);
+        out.errorString = QCoreApplication::translate("main", "--%1/--%2/--%3/--%4 are only supported on Windows.").arg(kOptDesktop, kOptSwrast, kOptNoWinAssertUI, kOptStreamOnly);
         return out;
     }
 #endif
@@ -255,6 +261,7 @@ CommandLineParseResult parseCommandLine()
 #ifdef Q_OS_WIN
     out.useDesktopGL = parser.isSet(desktopOpt);
     out.quietWindowsAsserts = parser.isSet(quietWinAssertOpt);
+    out.streamOnlyMode = parser.isSet(streamOnlyOpt);
 #endif
 
 #if defined(Q_OS_WIN) || defined(Q_OS_MACOS)

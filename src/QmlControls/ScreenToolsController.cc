@@ -91,6 +91,15 @@ double ScreenToolsController::defaultFontDescent(int pointSize)
     return QFontMetrics(QFont(normalFontFamily(), pointSize)).descent();
 }
 
+bool ScreenToolsController::streamOnlyMode()
+{
+#if defined(Q_OS_WIN)
+    return qgcApp()->streamOnlyMode();
+#else
+    return false;
+#endif
+}
+
 #if !defined(Q_OS_ANDROID) && !defined(Q_OS_IOS)
 bool ScreenToolsController::fakeMobile()
 {
