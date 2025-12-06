@@ -1,0 +1,21 @@
+name: Fetch GStreamer MSVC 1.22.12
+
+on:
+  workflow_dispatch:
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download GStreamer MSVC runtime and devel
+        run: |
+          wget https://gstreamer.freedesktop.org/data/pkg/windows/1.22.12/msvc/gstreamer-1.0-msvc-x86_64-1.22.12.msi
+          wget https://gstreamer.freedesktop.org/data/pkg/windows/1.22.12/msvc/gstreamer-1.0-devel-msvc-x86_64-1.22.12.msi
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gstreamer-msvc-1.22.12
+          path: |
+            gstreamer-1.0-msvc-x86_64-1.22.12.msi
+            gstreamer-1.0-devel-msvc-x86_64-1.22.12.msi
