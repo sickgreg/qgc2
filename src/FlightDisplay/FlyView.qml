@@ -16,6 +16,7 @@ import QtLocation
 import QtPositioning
 import QtQuick.Window
 import QtQml.Models
+import QtQml
 
 import QGroundControl
 
@@ -60,6 +61,7 @@ Item {
     property real   _rightPanelWidth:       ScreenTools.defaultFontPixelWidth * 30
     property var    _mapControl:            mapControl
     property real   _widgetMargin:          ScreenTools.defaultFontPixelWidth * 0.75
+    readonly property bool _streamOnlyMode: ScreenTools.isWindows && ScreenTools.streamOnlyMode
 
     property real   _fullItemZorder:    0
     property real   _pipItemZorder:     QGroundControl.zOrderWidgets
@@ -100,6 +102,7 @@ Item {
         FlyViewVideo {
             id:         videoControl
             pipView:    _pipView
+            streamOnlyMode: _streamOnlyMode
         }
 
         PipView {
@@ -116,6 +119,25 @@ Item {
 
             property real leftEdgeBottomInset: visible ? width + anchors.margins : 0
             property real bottomEdgeLeftInset: visible ? height + anchors.margins : 0
+        }
+
+        Binding {
+            target:         QGroundControl.videoManager
+            property:       "fullScreen"
+            value:          true
+            when:           _streamOnlyMode
+        }
+
+        Loader {
+            id:                 streamOnlyRecorder
+            anchors.bottom:     parent.bottom
+            anchors.right:      parent.right
+            anchors.margins:    _widgetMargin
+            active:             _streamOnlyMode && globals.activeVehicle
+            visible:            active
+            z:                  QGroundControl.zOrderTopMost
+
+            sourceComponent: PhotoVideoControl { }
         }
 
         FlyViewWidgetLayer {
@@ -182,6 +204,7 @@ Item {
         activationApproval:         UTMSPStateStorage.showActivationTab && QGroundControl.utmspManager.utmspVehicle.vehicleActivation
         flightID:                   UTMSPStateStorage.flightID
         anchors.fill:               parent
+        visible:                    !_streamOnlyMode
 
         function onActivationTriggered(value) {
             _root.utmspSendActTrigger = value

@@ -89,8 +89,33 @@ To install Qt:
    - **Fedora:** `sudo dnf install speech-dispatcher SDL2-devel SDL2 systemd-devel patchelf`
    - **Arch Linux:** `pacman -Sy speech-dispatcher patchelf`
    - **Mac** `sh qgroundcontrol/tools/setup/install-dependencies-osx.sh`
-   - **Windows** `qgroundcontrol/tools/setup/install-depedencies-windows.ps1`
+   - **Windows**: run `qgroundcontrol/tools/setup/install-dependencies-windows.ps1` (instructions below)
    - **Android** Installing dependencies for android is quite involved. You are better off using Qt documentation for android setup instructions. Search for "Qt 6.10 android" on the internet to find the correct "Gettting Started with Qt for Android" page. Read it full and carefully! An example of what you are looking for is [here](https://doc.qt.io/qt-6/android-getting-started.html).
+
+   ::: details Windows dependency script walkthrough
+   1. Open **PowerShell** with standard user rights (search for “PowerShell” in the Start menu and launch it).
+   2. Switch to your clone:
+
+      ```powershell
+      cd path\to\qgroundcontrol
+      ```
+
+   3. If you have never run local scripts before, allow only this session to run them:
+
+      ```powershell
+      Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+      ```
+
+      This change lasts only for the current PowerShell window.
+
+   4. Execute the dependency installer:
+
+      ```powershell
+      ./tools/setup/install-dependencies-windows.ps1
+      ```
+
+   5. Wait for the script to finish. If you are prompted to install packages, type **Y** and press **Enter**.
+   :::
 
 1. Install Optional/OS-Specific Functionality
 
@@ -113,6 +138,12 @@ When installing, select _Desktop development with C++_ as shown:
 ::: info
 Visual Studio is ONLY used to get the compiler. Building _QGroundControl_ is done using [Qt Creator](#qt-creator) or [cmake](#cmake) directly as outlined below.
 :::
+
+#### Cross-compiling Windows from Linux
+
+_QGroundControl_ relies on the Qt {{ $frontmatter.qt_version }} **MSVC 2022** kit for Windows builds and expects the Visual Studio toolchain.
+Cross-compiling from Linux is not supported or tested because Qt does not provide an official MSVC cross toolchain and the project does not ship or maintain a MinGW-based cross build configuration.
+Use a native Windows environment (or a Windows VM/hosted runner) when you need Windows binaries.
 
 #### Building using Qt Creator {#qt-creator}
 
